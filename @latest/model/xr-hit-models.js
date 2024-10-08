@@ -1,20 +1,9 @@
 import * as THREE from 'three';
 import { ARButton } from 'three/examples/jsm/webxr/ARButton'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 
-let loadedModels = [];
 let hitTestSource = null;
 let hitTestSourceRequested = false;
-
-let gltfLoader = new GLTFLoader();
-gltfLoader.load('/models/tree1.gltf', onLoad);
-gltfLoader.load('/models/tree2.gltf', onLoad);
-gltfLoader.load('/models/tree3.gltf', onLoad);
-
-function onLoad(gtlf) {
-    loadedModels.push(gtlf.scene)
-}
 
 const scene = new THREE.Scene()
 
@@ -53,6 +42,8 @@ renderer.xr.enabled = true
 document.body.appendChild(renderer.domElement);
 document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
 
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshStandardMaterial({ color: 0xffffff * Math.random() });
 
 let controller = renderer.xr.getController(0);
 controller.addEventListener('select', onSelect);
@@ -60,12 +51,10 @@ scene.add(controller)
 
 function onSelect() {
     if (reticle.visible) {
-        let randomIndex = Math.floor((Math.random() * loadedModels.length))
-        let model = loadedModels[randomIndex].clone()
-        model.position.setFromMatrixPosition(reticle.matrix);
-        model.scale.set(.1, .1, .1)
-        model.name = "model"
-        scene.add(model)
+        const cube = new THREE.Mesh(geometry, material);
+        cube.position.setFromMatrixPosition(reticle.matrix);
+        cube.name = "cube"
+        scene.add(cube)
     }
 }
 
@@ -103,10 +92,10 @@ function render(timestamp, frame) {
             }
         }
     }
-    //console.log(scene.children)
+    // console.log(scene.children)
     scene.children.forEach(object => {
-        if (object.name === "model") {
-            //object.rotation.y += 0.01
+        if (object.name === "cube") {
+            object.rotation.y += 0.01
         }
     })
     renderer.render(scene, camera)
