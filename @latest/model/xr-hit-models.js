@@ -42,8 +42,8 @@ renderer.xr.enabled = true
 document.body.appendChild(renderer.domElement);
 document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshStandardMaterial({ color: 0xffffff * Math.random() });
+const geometry = new THREE.BoxGeometry(0.75, 0.5, 1);
+const material = new THREE.MeshStandardMaterial({ color: 0xacd8a7  });
 
 let controller = renderer.xr.getController(0);
 controller.addEventListener('select', onSelect);
