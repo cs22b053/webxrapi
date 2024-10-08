@@ -95,7 +95,7 @@ function render(timestamp, frame) {
     // console.log(scene.children)
     scene.children.forEach(object => {
         if (object.name === "cube") {
-            object.rotation.y += 0.01
+            //object.rotation.y += 0.01
         }
     })
     renderer.render(scene, camera)
